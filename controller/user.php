@@ -112,7 +112,7 @@ if (isset($_POST['update_admin'])) {
     $image_tmp_name = $_FILES['image']['tmp_name'];
     $image_folder = 'uploaded_img/' . $image;
 
-    $update_user = $conn->prepare("UPDATE `admin` SET name=? ,password=? , email=?, where id=?");
+    $update_user = $conn->prepare("UPDATE `admin` SET name=? ,password=? , email=? where id=?");
     $update_user->execute([$username,$password,$email,$id]);
     setcookie('message', 'تم العملية بنجاح', time() + 4);
     if (!empty($image)) {
