@@ -89,3 +89,44 @@ if (isset($_POST['update_emp'])) {
     header('location:../admin/home/index.php');
 }
 
+if (isset($_POST['update_admin'])) {
+    // اسم المستخدم
+    $username = $_POST['username'];
+    $username = filter_var($username, FILTER_SANITIZE_SPECIAL_CHARS);
+    // الايميل
+    $email = $_POST['email'];
+    $email = filter_var($email, FILTER_SANITIZE_EMAIL);
+ 
+    $password = $_POST['old_password'];
+    if (!empty($_POST['password'])) {
+        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+    }
+    // رقم المستخدم
+    $id=$_POST['id'];
+    // الصورة السابقة
+    $old_image = $_POST['old_image'];
+
+    $image = $_FILES['image']['name'];
+    $image = filter_var($image, FILTER_SANITIZE_SPECIAL_CHARS);
+    $image_size = $_FILES['image']['size'];
+    $image_tmp_name = $_FILES['image']['tmp_name'];
+    $image_folder = 'uploaded_img/' . $image;
+
+    $update_user = $conn->prepare("UPDATE `admin` SET name=? ,password=? , email=?, where id=?");
+    $update_user->execute([$username,$password,$email,$id]);
+    setcookie('message', 'تم العملية بنجاح', time() + 4);
+    if (!empty($image)) {
+        if ($image_size > 2000000) {
+            setcookie('message', 'حجم الصورة كبير جدا  ', time() + 4);
+        } else {
+            $update_image = $conn->prepare("UPDATE `admin` SET avatar = ? WHERE id = ?");
+            $update_image->execute([$image, $id]);
+            move_uploaded_file($image_tmp_name, $image_folder);
+            unlink('uploaded_img/' . $old_image);
+            setcookie('message', ' تم تعديل الصورة!', time() + 4000);
+        }
+    }
+    
+    header('location:../admin/home/admin.php');
+}
+

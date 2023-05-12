@@ -164,9 +164,10 @@ if ($type == 'admin') {
                         </a>
                         <div id="add_admin" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                             <div class="bg-white py-2 collapse-inner rounded">
-                                <h6 class="collapse-header">الطلبات:</h6>
+                                <h6 class="collapse-header">المدراء:</h6>
                                 <!--رابط صفحة عرض جدول بيانات الطلبات-->
                                 <a class="collapse-item" href="../home/add-admin.php">اضافة مدير</a>
+                                <a class="collapse-item" href="../home/admin.php">عرض المدراء</a>
                             </div>
                         </div>
                     </li>
